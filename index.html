@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#082020">
+<title>JP Acessórios · Orçamento de reparos</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#082020;--card:#0e2e30;--ln:#1c4a4c;--tx:#e4eeee;--mu:#86adad;--ac:#2f9c9a;--fl:#1c807f;--ok:#6ee7b7;--wr:#f5c26b}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:300 15px Outfit,system-ui,sans-serif;min-height:100vh}
+header{text-align:center;padding:10px 16px 0}
+header img{width:170px;max-width:50%;margin-top:14px}
+header p{color:var(--mu);font-weight:200;letter-spacing:.1em;font-size:.8rem;margin-top:10px}
+main{max-width:760px;margin:auto;padding:8px 16px 40px}
+h2{font-weight:300;font-size:1.05rem;margin:28px 0 12px}
+h2 b{color:var(--ac);font-weight:600;margin-right:10px}
+.tabs,.grid{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--card);border:1px solid var(--ln);color:var(--tx);border-radius:999px;padding:9px 16px;font:inherit;cursor:pointer}
+.chip:hover{border-color:var(--ac)}
+.chip.on{background:var(--fl);color:#fff;border-color:var(--fl);font-weight:600}
+.sy{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.sy .chip{border-radius:14px;text-align:left;padding:14px}
+input,select{background:var(--card);border:1px solid var(--ln);color:var(--tx);border-radius:12px;padding:11px 14px;font:inherit;width:100%}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:16px;margin:10px 0;display:flex;gap:14px;align-items:flex-start;cursor:pointer}
+.card.on{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+.card h3{font-weight:600;font-size:.98rem}
+.card p{color:var(--mu);font-size:.84rem;margin-top:4px;line-height:1.4}
+.ck{width:22px;height:22px;border:1.5px solid var(--mu);border-radius:7px;display:grid;place-items:center;flex:none;font-size:.8rem;margin-top:2px}
+.card.on .ck{background:var(--fl);color:#fff;border-color:var(--fl)}
+.pr{font-size:1.15rem;font-weight:600;white-space:nowrap;text-align:right}
+.pr small{display:block;color:var(--mu);font-weight:300;font-size:.72rem}
+.bd{display:inline-block;background:#12433f;color:var(--ok);border-radius:8px;padding:3px 10px;font-size:.78rem;margin-top:8px}
+.wn{background:var(--card);border:1px solid var(--ln);border-left:3px solid #d9a441;border-radius:12px;padding:12px 14px;margin:12px 0;cursor:pointer;color:var(--tx)}
+.wh{display:flex;align-items:center;gap:12px}
+.wh>svg:first-child{width:20px;flex:none;color:#d9a441}
+.wh span{flex:1;min-width:0}
+.wh b{display:block;font-weight:600;font-size:.88rem}
+.wh small{color:var(--mu);font-size:.8rem;line-height:1.35;display:block;margin-top:2px}
+.wh>svg:last-child{width:18px;flex:none;color:var(--mu);transition:transform .3s}
+.wn.open .wh>svg:last-child{transform:rotate(180deg)}
+.wn p{color:var(--mu);font-size:.82rem;line-height:1.5;margin-top:10px;padding-top:10px;border-top:1px solid var(--ln)}
+.tp{background:#0b3a3a;border:1px solid var(--ac);border-radius:12px;padding:12px 14px;font-size:.84rem;margin:12px 0;line-height:1.45}
+.sum{position:sticky;bottom:12px;background:linear-gradient(135deg,#1f8a8a,#14605f);color:#fff;border-radius:18px;padding:14px 18px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-weight:400}
+.sum strong{font-size:1.2rem;font-weight:600}
+.btn{border:0;border-radius:999px;padding:12px 22px;font:600 .95rem Outfit,sans-serif;cursor:pointer;background:#082020;color:var(--tx);text-decoration:none;display:inline-block}
+.btn.g{background:#25d366;color:#05260f}
+.row{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.row>span{flex:1;min-width:120px}
+.row input{width:150px}.row select{width:auto}
+.mu{color:var(--mu);font-size:.85rem}
+.ts{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--fl);color:#fff;padding:10px 22px;border-radius:999px;z-index:9;font-weight:600}
+footer{text-align:center;color:var(--mu);font-size:.88rem;padding:24px 16px;border-top:1px solid var(--ln);line-height:1.9}
+footer a{color:var(--tx)}
+:focus-visible{outline:2px solid var(--tx);outline-offset:2px}
+body{overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;z-index:-1;width:60vmax;height:60vmax;border-radius:50%;pointer-events:none}
+body::before{background:radial-gradient(circle,#1f9a9a,transparent 68%);opacity:.3;top:-30vmax;left:-20vmax;animation:dr 22s ease-in-out infinite alternate}
+body::after{background:radial-gradient(circle,#4fb3b1,transparent 68%);opacity:.16;bottom:-35vmax;right:-25vmax;animation:dr 28s ease-in-out infinite alternate-reverse}
+@keyframes dr{to{transform:translate(12vmax,8vmax) scale(1.15)}}
+.prog{display:flex;gap:6px;margin:10px 0 28px}
+.prog i{flex:1;height:3px;border-radius:3px;background:var(--ln);position:relative;overflow:hidden}
+.prog i::after{content:"";position:absolute;inset:0;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.prog i.on::after{transform:scaleX(1)}
+.big{font-weight:200;font-size:clamp(1.5rem,5.2vw,2rem);line-height:1.12;margin:6px 0 24px;letter-spacing:-.01em}
+.field{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--ln);color:var(--tx);border-radius:18px;padding:16px 18px;font:300 1.02rem Outfit,sans-serif;cursor:pointer;transition:.25s}
+.field:hover,.field.open{border-color:var(--ac);box-shadow:0 0 28px #2a9d9d55}
+.field svg{width:22px;transition:transform .3s}
+.field.open svg{transform:rotate(180deg)}
+.dd{background:var(--card);border:1px solid var(--ln);border-radius:18px;margin-top:10px;padding:12px;box-shadow:0 18px 40px #0007}
+.seg{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:10px}
+.seg button{flex:1;border:0;background:none;color:var(--mu);font:inherit;padding:9px;border-radius:9px;cursor:pointer;transition:.2s}
+.seg button.on{background:var(--fl);color:#fff;font-weight:600}
+#ml{max-height:300px;overflow:auto;margin-top:8px}
+.gh{color:var(--mu);font-size:.82rem;padding:12px 12px 4px}
+.opt{display:block;width:100%;text-align:left;background:none;border:0;color:var(--tx);font:inherit;padding:13px 12px;border-radius:10px;cursor:pointer;transition:.15s}
+.opt:hover{background:#12403f;padding-left:18px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.pill{background:var(--card);border:1px solid var(--ln);color:var(--tx);border-radius:999px;padding:9px 16px 9px 18px;font:inherit;cursor:pointer;display:flex;gap:12px;align-items:center;transition:.2s}
+.pill:hover{border-color:var(--ac)}
+.pill u{color:var(--mu);font-size:.8rem;text-decoration:none}
+.opt2{display:flex;align-items:center;gap:16px;width:100%;background:var(--card);border:1px solid var(--ln);color:var(--tx);border-radius:16px;padding:14px 16px;margin-bottom:10px;font:300 .98rem Outfit,sans-serif;cursor:pointer;text-align:left;transition:.25s}
+.opt2:hover{border-color:var(--ac);transform:translateX(6px);background:#12403f}
+.opt2 svg{width:24px;flex:none;color:var(--ac);transition:.25s}
+.opt2:hover svg{color:var(--tx);transform:scale(1.12)}
+.in{animation:in .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--i,0)*70ms)}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.card{transition:.25s}
+.card:hover{border-color:var(--ac);transform:translateY(-2px)}
+.ck::after{content:"";width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px);opacity:0;transition:.2s}
+.card.on .ck::after{opacity:1}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
+html{-webkit-text-size-adjust:100%}
+body{min-height:100dvh;-webkit-tap-highlight-color:transparent}
+button,a,.card{touch-action:manipulation}
+input,select{font-size:16px}
+@media(max-width:520px){
+main{padding:4px 14px 32px}
+.card{padding:14px;gap:12px}
+.card p{font-size:.8rem}
+.pr{font-size:1.05rem}
+.sum{padding:14px 14px max(14px,env(safe-area-inset-bottom));border-radius:16px;bottom:8px}
+.sum>span:first-child{flex:1 1 100%;display:flex;justify-content:space-between;align-items:baseline}
+.sum>span:last-child,.sum>.btn{display:flex;gap:8px;flex:1 1 100%}
+.sum .btn{flex:1;text-align:center;padding:13px 10px}
+.row input{width:100%}
+.pills{margin-bottom:18px}
+#ml{max-height:50vh}
+}
+@media(hover:none){.opt2:hover,.card:hover{transform:none}.opt:hover{padding-left:12px}}
+.qs{display:none}
+@media print{
+@page{size:A4;margin:0}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{background:#082020!important}
+body::before,body::after,header,footer,.ts,main>*:not(.qs){display:none!important}
+main{max-width:none;margin:0;padding:0}
+.qs{display:block;position:relative;overflow:hidden;height:296mm;padding:18mm 18mm 14mm;color:var(--tx);background:radial-gradient(circle at 90% 6%,#1b6a6a 0,transparent 48%),radial-gradient(circle at 5% 100%,#124a4a 0,transparent 45%),#082020}
+.qs::before{content:"";position:absolute;width:150mm;height:150mm;right:-55mm;top:-45mm;border:1.6mm solid #4fb3b1;border-right-color:transparent;border-radius:50%;opacity:.16;transform:rotate(-25deg)}
+.qs>*{position:relative}
+.qh{display:flex;align-items:center;gap:8mm;margin-bottom:12mm}
+.qh img{width:34mm}
+.qh h1{font-weight:200;font-size:7mm;line-height:1.1}
+.qh p{color:var(--mu);font-size:3.6mm;margin-top:2mm}
+.qd{border-top:.3mm solid #2a9d9d;padding:7mm 0 5mm}
+.qd span{color:var(--mu);font-size:3.6mm;display:block}
+.qd b{font-weight:200;font-size:9.5mm;line-height:1.1;letter-spacing:-.2mm}
+.qr{display:flex;justify-content:space-between;gap:8mm;align-items:flex-start;padding:5mm 0;border-bottom:.2mm solid #1c4a4c}
+.qr h3{font-weight:600;font-size:4.4mm}
+.qr p{color:var(--mu);font-size:3.5mm;margin-top:1mm;max-width:105mm}
+.qr i{display:inline-block;font-style:normal;background:#12433f;color:var(--ok);border-radius:2mm;padding:.6mm 3mm;font-size:3.2mm;margin-top:2mm}
+.qr strong{font-size:5.2mm;font-weight:600;white-space:nowrap;text-align:right}
+.qr small{display:block;color:var(--mu);font-size:3mm;font-weight:300}
+.qt{margin-top:9mm;background:linear-gradient(120deg,#1f8a8a,#14605f);color:#fff;border-radius:6mm;padding:7mm 9mm;display:flex;justify-content:space-between;align-items:center}
+.qt span{font-size:4mm}
+.qt strong{font-size:9mm;font-weight:600}
+.qn{color:var(--mu);font-size:3.4mm;line-height:1.5;margin-top:5mm}
+.qc{display:block;margin-top:9mm;border:.4mm solid #2a9d9d;border-radius:5mm;padding:6mm 8mm;color:var(--tx);text-decoration:none;font-size:3.8mm}
+.qc b{display:block;font-size:5.5mm;font-weight:600;margin-top:1.5mm}
+.qn.rk{border-left:.8mm solid #d9a441;background:#d9a44118;padding:3.5mm 5mm;border-radius:0 3mm 3mm 0;color:var(--mu)}
+.qn.rk b{color:var(--tx);font-weight:600}
+.qf{position:absolute!important;left:18mm;right:18mm;bottom:12mm;color:var(--mu);font-size:3.4mm;border-top:.2mm solid #1c4a4c;padding-top:4mm}
+}
+</style>
+</head>
+<body>
+<header><img src="logo.png" alt="JP Acessórios" onerror="this.outerHTML='<h1>JP ACESSÓRIOS</h1>'"><p class="noprint">Orçamento de reparos para iPhone e Apple Watch</p></header>
+<main id="app"></main>
+<footer>
+Av. Toaldo Túlio, 3110<br>
+<a href="https://wa.me/554198056741">+55 41 9805-6741</a> · <a href="https://instagram.com/jpcellacessorios_">@jpcellacessorios_</a><br>
+<a href="#admin" class="mu">Área restrita</a>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ===== CONFIGURAÇÃO ===== */
+const CFG={
+  sbUrl:"",            // URL do projeto Supabase (vazio = modo demonstração, dados só neste navegador)
+  sbKey:"",            // chave pública "anon" do Supabase
+  wa:"554198056741",   // WhatsApp com DDI+DDD (confirme o número)
+  demoUser:"admin",demoPass:"jp123" // login do modo demonstração (não usado com Supabase)
+};
+
+/* ===== DADOS PADRÃO (tabela de preços) ===== */
+const M="XR,11,11 Pro,11 Pro Max,12,12 mini,12 Pro,12 Pro Max,13,13 mini,13 Pro,13 Pro Max,14,14 Plus,14 Pro,14 Pro Max,15,15 Plus,15 Pro,15 Pro Max,16,16 Plus,16 Pro,16 Pro Max,17,17 Air,17 Pro,17 Pro Max,18 Pro,18 Pro Max".split(",");
+const W="Séries 2 e 3,Série 4,Série 5,Série SE,Série 6,Série 7,Série 8,Série 9,Série 10,Série 11".split(",");
+/* flags: g=garantia 1 ano, f=a partir de, r=aviso de risco, W=Apple Watch */
+const S=[
+["vidro","Troca de vidro","Troca somente do vidro, preservando o display original.","r","XR=150,11=150,11 Pro=230,11 Pro Max=240,12=250,12 mini=230,12 Pro=250,12 Pro Max=300,13=270,13 mini=250,13 Pro=300,13 Pro Max=320,14=320,14 Plus=340,14 Pro=350,14 Pro Max=350,15=370,15 Plus=390,15 Pro=420,15 Pro Max=450,16=450,16 Plus=470,16 Pro=450,16 Pro Max=450,17=600,17 Air=600,17 Pro=650,17 Pro Max=650,18 Pro=750,18 Pro Max=750"],
+["touch","Vidro com touch","Troca do vidro com touch, para quando o toque também foi afetado.","r","XR=230,11=250,11 Pro=300,11 Pro Max=320,12=320,12 Pro=320"],
+["tela","Tela premium","Troca da tela completa, peça + mão de obra.","g","XR=220,11=240,11 Pro=320,11 Pro Max=410,12=400,12 mini=500,12 Pro=400,12 Pro Max=550,13=470,13 mini=550,13 Pro=650,13 Pro Max=650,14=500,14 Plus=600,14 Pro=800,14 Pro Max=800,15=850,15 Plus=850,15 Pro=820,15 Pro Max=850,16=850,16 Plus=700,16 Pro=820,16 Pro Max=880,17=950,17 Pro=1000,17 Pro Max=1050"],
+["bat","Troca de bateria","Bateria sem mensagem de aviso no sistema, peça + mão de obra. Compatibilidade sujeita à avaliação.","g","XR=170,11=180,11 Pro=230,11 Pro Max=240,12=210,12 mini=180,12 Pro=210,12 Pro Max=250,13=210,13 mini=180,13 Pro=260,13 Pro Max=280,14=220,14 Plus=240,14 Pro=260,14 Pro Max=270,15=260,15 Plus=280,15 Pro=290,15 Pro Max=300"],
+["cal","Bateria calibrável","Pode aparecer mensagem de peça usada. Consulte a disponibilidade.","","12=180,12 mini=170,12 Pro=180,12 Pro Max=200,13=180,13 mini=170,13 Pro=190,13 Pro Max=190,14=190,14 Plus=190,14 Pro=190,14 Pro Max=195,15=190,15 Plus=190,15 Pro=200,15 Pro Max=200"],
+["up","Reprogramação de bateria (UP)","Recomendada com saúde da bateria acima de 81%. Não altera os ciclos de carga.","",M.map((m,i)=>i>0&&i<16?m+"=100":[16,18,19].includes(i)?m+"=120":0).filter(Boolean).join()],
+["tampa","Troca de tampa","Troca do vidro traseiro.","","XR=280,11=280,11 Pro=300,11 Pro Max=320,12=320,12 mini=290,12 Pro=320,12 Pro Max=350,13=320,13 mini=290,13 Pro=350,13 Pro Max=360,14=320,14 Plus=330,14 Pro=370,14 Pro Max=370,15=350,15 Plus=360,15 Pro=350,15 Pro Max=350,16=350,16 Plus=350,16 Pro=400,16 Pro Max=400,17=450,17 Pro=390,17 Pro Max=400"],
+["carc","Troca de carcaça","Carcaça premium. Modelos originais sob consulta.","","XR=280,11=285,11 Pro=340,11 Pro Max=350,12=300,12 mini=300,12 Pro=395,12 Pro Max=400,13=340,13 mini=360,13 Pro=400,13 Pro Max=420,14=400,14 Plus=410,14 Pro=500,14 Pro Max=520,15=500,15 Plus=520,15 Pro=600,15 Pro Max=650,16=600,16 Plus=630,16 Pro=680,16 Pro Max=700"],
+["faceid","Reparo do Face ID","Reparo do sistema TrueDepth. Valor sujeito a diagnóstico.","f","XR=200,11=210,11 Pro=220,11 Pro Max=220,12=210,12 mini=210,12 Pro=210,12 Pro Max=220,13=220,13 mini=210,13 Pro=240,13 Pro Max=250,14=230,14 Plus=270,14 Pro=270,14 Pro Max=280,15=270,15 Plus=270,15 Pro=270,15 Pro Max=270,16=400,16 Plus=400,16 Pro=420,16 Pro Max=420"],
+["lente","Lente de câmera","Valor por lente individual. Lentes adicionais: acréscimo de 30% por lente.","","XR=120,11=120,11 Pro=130,11 Pro Max=130,12=120,12 mini=120,12 Pro=150,12 Pro Max=150,13=120,13 mini=120,13 Pro=150,13 Pro Max=150,14=150,14 Plus=150,14 Pro=170,14 Pro Max=170,15=150,15 Plus=150,15 Pro=160,15 Pro Max=160,16=160,16 Plus=160,16 Pro=180,16 Pro Max=180"],
+["vidrow","Troca de vidro do Apple Watch","Troca do vidro do relógio.","rW","Séries 2 e 3=330,Série 4=250,Série 5=250,Série SE=250,Série 6=270,Série 7=350,Série 8=380,Série 9=400,Série 10=420,Série 11=450"]
+];
+/* Problemas: [ícone, rótulo, palavras-chave (sem acento), serviços] */
+const Y=[
+["scr","Tela quebrada ou trincada","tela quebr trinc rach vidro display touch caiu cair risc","vidro,touch,tela"],
+["bat","Bateria não segura carga","bateria carga carreg descarreg viciad dura saude porcent desliga","bat,cal,up"],
+["bck","Traseira quebrada","traseir tampa costas carcaca lateral amassad","tampa,carc"],
+["fid","Face ID não funciona","face desbloque reconhec truedepth","faceid"],
+["cam","Câmera quebrada ou embaçada","camera lente embac arranh foto","lente"]
+];
+const RISCO="A troca de vidro é um procedimento técnico delicado. Mesmo com todo o cuidado, há risco de o display apresentar falhas (perda de imagem, toque ou manchas), principalmente quando já existem danos internos não visíveis.";
+
+function def(){
+  const d={models:[...M.map(n=>({n,t:"i",on:1})),...W.map(n=>({n,t:"w",on:1}))],services:[],prices:{}};
+  S.forEach(([id,n,ds,fl,p])=>{d.services.push({id,n,d:ds,fl,on:1});p.split(",").forEach(x=>{const[k,v]=x.split("=");d.prices[id+"|"+k]=+v})});
+  return d;
+}
+
+/* ===== UTILIDADES E ESTADO ===== */
+const $=q=>document.querySelector(q),A=$("#app");
+const e=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const R=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const nm=m=>(m.t=="i"?"iPhone ":"")+m.n;
+const ty=v=>v.fl.includes("W")?"w":"i";
+const nz=x=>x.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const price=(id,m)=>D.prices[id+"|"+m]||0;
+const toast=m=>{const d=document.createElement("div");d.className="ts";d.textContent=m;document.body.append(d);setTimeout(()=>d.remove(),2200)};
+let D,sb=null,authed=false,ad=false,cs="";
+let s={t:"i",m:null,ids:null,lab:"",note:"",q:"",sel:[],dd:false,mq:"",fx:"",rk:false};
+if(CFG.sbUrl&&window.supabase)sb=supabase.createClient(CFG.sbUrl,CFG.sbKey);
+
+async function load(){
+  try{
+    if(sb){const{data}=await sb.from("config").select("data").eq("id",1).single();if(data&&data.data&&data.data.models)return data.data}
+    else{const x=localStorage.getItem("jp");if(x)return JSON.parse(x)}
+  }catch(err){}
+  return def();
+}
+async function save(){
+  try{
+    if(sb){const{error}=await sb.from("config").upsert({id:1,data:D});return !error}
+    localStorage.setItem("jp",JSON.stringify(D));return true;
+  }catch(err){return false}
+}
+
+/* ===== SITE PÚBLICO ===== */
+function match(q){
+  q=nz(q);let best=[],top=0;
+  Y.forEach((y,i)=>{const c=y[2].split(" ").filter(k=>q.includes(k)).length;if(c>top){top=c;best=[i]}else if(c&&c==top)best.push(i)});
+  return best;
+}
+const cur=()=>D.models.find(x=>x.n==s.m&&x.t==s.t);
+function link(txt){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(txt)}
+
+const IC={
+scr:'<rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M10.5 6l3 3-2.5 2 3 3.5"/>',
+bat:'<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M7 12h5"/>',
+bck:'<rect x="7" y="2" width="10" height="20" rx="2.5"/><rect x="9.5" y="4.5" width="4" height="4" rx="1"/>',
+fid:'<path d="M4 9V6a2 2 0 012-2h3M15 4h3a2 2 0 012 2v3M20 15v3a2 2 0 01-2 2h-3M9 20H6a2 2 0 01-2-2v-3M9 10v1.5M15 10v1.5M12 10v3h-1M9 16c1.7 1.2 4.3 1.2 6 0"/>',
+cam:'<circle cx="12" cy="13" r="3.8"/><path d="M4 8h3l2-3h6l2 3h3v11H4z"/>'};
+const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`;
+const chev='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+const inf='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>';
+const fx=n=>s.fx==n?" in":"";
+let lastT=0;
+
+function mlist(){
+  const q=nz(s.mq||""),ms=D.models.filter(m=>m.on&&m.t==s.t&&nz(nm(m)).includes(q)).reverse();
+  let g="",h="";
+  ms.forEach(m=>{const k=s.t=="i"?m.n.split(" ")[0]:"";if(k!=g){g=k;if(k)h+=`<div class="gh">iPhone ${e(k)}</div>`}h+=`<button class="opt" data-a="m" data-v="${e(m.n)}">${e(nm(m))}</button>`});
+  return h||'<p class="mu" style="padding:12px">Nenhum modelo encontrado.</p>';
+}
+
+function home(){
+  const m=s.m&&cur();
+  const step=!m?0:!s.ids?1:s.sel.length?3:2;
+  let h=`<div class="prog noprint">${[0,1,2].map(i=>`<i class="${step>i?"on":""}"></i>`).join("")}</div>`;
+  if(!m){
+    return h+`<h1 class="big">Qual é o seu aparelho?</h1>
+    <button class="field${s.dd?" open":""}" data-a="dd"><span>Escolher aparelho</span>${chev}</button>`
+    +(s.dd?`<div class="dd${fx("dd")}"><div class="seg">${[["i","iPhone"],["w","Apple Watch"]].map(([k,l])=>`<button class="${s.t==k?"on":""}" data-a="t" data-v="${k}">${l}</button>`).join("")}</div><input id="mq" placeholder="Buscar modelo, ex.: 13 pro" value="${e(s.mq)}" autocomplete="off"><div id="ml">${mlist()}</div></div>`:"");
+  }
+  h+=`<div class="pills noprint"><button class="pill" data-a="em">${e(nm(m))}<u>alterar</u></button>${s.ids&&s.t=="i"?`<button class="pill" data-a="ey">${e(s.lab||"Todos os serviços")}<u>alterar</u></button>`:""}</div>`;
+  if(!s.ids){
+    return h+`<h1 class="big${fx("y")}">O que aconteceu com o ${e(nm(m))}?</h1>
+    ${Y.map((y,i)=>`<button class="opt2${fx("y")}" style="--i:${i+1}" data-a="y" data-v="${i}">${svg(y[0])}${y[1]}</button>`).join("")}
+    <div class="${fx("y")}" style="--i:6;display:flex;gap:8px;margin-top:16px"><input id="q" placeholder="Ou conte com suas palavras: caiu e trincou" value="${e(s.q)}"><button class="btn" style="background:var(--fl)" data-a="q">Buscar</button></div>
+    <button class="chip" style="margin-top:12px" data-a="all">Ver todos os serviços</button>`;
+  }
+  const l=D.services.filter(v=>v.on&&ty(v)==s.t&&price(v.id,s.m)&&(s.t=="w"||s.ids=="all"||s.ids.includes(v.id)));
+  const sl=s.sel.map(id=>D.services.find(x=>x.id==id)).filter(Boolean);
+  const tot=sl.reduce((a,v)=>a+price(v.id,s.m),0),hasF=sl.some(v=>v.fl.includes("f")),pre=hasF?"a partir de ":"";
+  if(s.note)h+=`<div class="tp">${e(s.note)}</div>`;
+  if(l.some(v=>v.fl.includes("r")))h+=`<div class="wn${s.rk?" open":""}" data-a="rk"><div class="wh">${inf}<span><b>Antes de trocar o vidro</b><small>Procedimento delicado, com risco de falha no display.${s.rk?"":" Toque para ler."}</small></span>${chev}</div>${s.rk?`<p>${RISCO}</p>`:""}</div>`;
+  if(l.length>1&&l.some(v=>v.id=="tela")&&l.some(v=>v.id=="vidro"))h+=`<div class="tp noprint">Mais de uma opção resolve o problema. A troca de vidro mantém o seu display original; a tela premium troca a tela completa e tem garantia contratual de 1 ano.</div>`;
+  if(!l.length)h+=`<p class="mu">Não há valor cadastrado para este problema neste modelo. <a style="color:var(--tx)" href="${link("Olá! Quero um orçamento para "+nm(m))}">Consulte no WhatsApp</a>.</p>`;
+  h+=l.map((v,n)=>{const on=s.sel.includes(v.id);return `<div class="card${on?" on":""}${fx("res")}" style="--i:${n}" data-a="s" data-v="${v.id}"><span class="ck"></span><div style="flex:1"><h3>${e(v.n)}</h3><p>${e(v.d)}</p>${v.fl.includes("g")?'<span class="bd">Garantia contratual de 1 ano</span>':""}</div><div class="pr">${v.fl.includes("f")?"<small>a partir de</small>":""}${R(price(v.id,s.m))}</div></div>`}).join("");
+  h+=`<p class="mu noprint" style="margin-top:8px">Valores sujeitos à confirmação após avaliação do aparelho.</p>`;
+  if(sl.length){
+    const msg=`Olá, JP Acessórios! Fiz um orçamento pelo site:\n\nAparelho: ${nm(m)}\n${sl.map(v=>`• ${v.n}: ${v.fl.includes("f")?"a partir de ":""}${R(price(v.id,s.m))}`).join("\n")}\n\nTotal: ${pre}${R(tot)}\n\nGostaria de seguir com o reparo.`;
+    const dt=new Date(),ds=dt.toLocaleDateString("pt-BR"),qn="JP-"+ds.split("/").reverse().join("").slice(2)+"-"+dt.toTimeString().slice(0,5).replace(":","");
+    const qs=`<div class="qs"><div class="qh"><img src="logo.png" alt=""><div><h1>Orçamento de reparo</h1><p>Nº ${qn} · ${ds}</p></div></div>
+    <div class="qd"><span>Aparelho</span><b>${e(nm(m))}</b></div>
+    ${sl.map(v=>`<div class="qr"><div><h3>${e(v.n)}</h3><p>${e(v.d)}</p>${v.fl.includes("g")?"<i>Garantia contratual de 1 ano</i>":""}</div><strong>${v.fl.includes("f")?"<small>a partir de</small>":""}${R(price(v.id,s.m))}</strong></div>`).join("")}
+    <div class="qt"><span>Total do orçamento</span><strong>${pre}${R(tot)}</strong></div>
+    ${sl.some(v=>v.fl.includes("r"))?`<p class="qn rk"><b>Antes de trocar o vidro.</b> ${RISCO}</p>`:""}
+    <p class="qn">Valores sujeitos à confirmação após avaliação do aparelho.</p>
+    <a class="qc" href="${link(msg)}">Para aprovar este orçamento, chame no WhatsApp<b>+55 41 9805-6741</b></a>
+    <div class="qf">Av. Toaldo Túlio, 3110 · @jpcellacessorios_</div></div>`;
+    h+=`<div class="sum"><span>${sl.length} serviço${sl.length>1?"s":""}<br><strong id="tot" data-v="${tot}" data-p="${pre}">${pre}${R(tot)}</strong></span><span class="noprint"><button class="btn" data-a="pdf">Baixar PDF</button> <a class="btn g" href="${link(msg)}">Pedir no WhatsApp</a></span></div>${qs}`;
+  }else if(l.length)h+=`<div class="sum noprint"><span>Toque nos serviços para montar o orçamento.</span><a class="btn g" href="${link("Olá! Tenho uma dúvida sobre o reparo do "+nm(m))}">Tirar dúvida</a></div>`;
+  return h;
+}
+
+/* anima o total quando muda */
+function cu(){
+  const t=$("#tot");if(!t){lastT=0;return}
+  const to=+t.dataset.v,pre=t.dataset.p||"",f=lastT;lastT=to;if(f==to)return;
+  const t0=performance.now();
+  (function st(n){const k=Math.min(1,(n-t0)/500),v=f+(to-f)*(1-Math.pow(1-k,3));t.textContent=pre+R(Math.round(v));if(k<1)requestAnimationFrame(st)})(t0);
+}
+
+/* ===== PAINEL ADMIN ===== */
+function adm(){
+  if(!authed)return `<h2 class="keep">Área restrita</h2><div style="max-width:340px;display:grid;gap:10px"><input id="u" placeholder="${sb?"E-mail":"Usuário"}"><input id="p" type="password" placeholder="Senha"><button class="btn" style="background:var(--fl);color:#fff" data-a="in">Entrar</button><p id="er" style="color:var(--wr)"></p>${sb?"":'<p class="mu">Modo demonstração: os dados ficam salvos só neste navegador.</p>'}<a href="#" style="color:var(--mu)">Voltar ao site</a></div>`;
+  const sv=D.services.find(x=>x.id==cs)||D.services[0];cs=sv.id;
+  const row=(l,r)=>`<div class="row"><span>${l}</span>${r}</div>`;
+  return `<div class="row"><h2 class="keep" style="margin:0;flex:1">Painel JP Acessórios</h2><a class="btn" style="background:var(--card)" href="#">Ver site</a><button class="btn" style="background:var(--card)" data-a="out">Sair</button></div>
+  <h2>Preços por serviço</h2>
+  <select data-a="sv">${D.services.map(x=>`<option value="${x.id}"${x.id==sv.id?" selected":""}>${e(x.n)}</option>`).join("")}</select>
+  <p class="mu" style="margin:8px 0">Deixe o campo vazio para marcar como indisponível naquele modelo.</p>
+  ${D.models.filter(m=>m.t==ty(sv)).map(m=>row(e(nm(m)),`<input type="number" min="0" data-k="${e(sv.id+"|"+m.n)}" value="${D.prices[sv.id+"|"+m.n]||""}" placeholder="indisponível">`)).join("")}
+  <h2>Ajuste em lote</h2>
+  ${row("Reajustar todos os preços em %",`<input id="pc" type="number" placeholder="ex.: 10 ou -5"><button class="btn" style="background:var(--fl)" data-a="pct">Aplicar</button>`)}
+  <h2>Aparelhos</h2>
+  ${row("Novo aparelho",`<input id="nn" placeholder="ex.: 18 ou Série 12"><select id="nt"><option value="i">iPhone</option><option value="w">Apple Watch</option></select><button class="btn" style="background:var(--fl)" data-a="am">Adicionar</button>`)}
+  ${D.models.map((m,i)=>row(e(nm(m)),`<button class="chip${m.on?" on":""}" data-a="tm" data-v="${i}">${m.on?"Visível":"Oculto"}</button><button class="chip" data-a="dm" data-v="${i}" >Remover</button>`)).join("")}
+  <h2>Serviços</h2>
+  <p class="mu" style="margin-bottom:8px">Serviços novos aparecem na opção “Ver todos os serviços”. Cadastre os preços acima.</p>
+  <div style="display:grid;gap:8px;margin-bottom:10px"><input id="sn" placeholder="Nome do serviço"><input id="sd" placeholder="Descrição curta"><div class="row" style="border:0"><select id="st"><option value="i">iPhone</option><option value="w">Apple Watch</option></select><label><input type="checkbox" id="sg" style="width:auto"> Garantia 1 ano</label><label><input type="checkbox" id="sf" style="width:auto"> “A partir de”</label><button class="btn" style="background:var(--fl)" data-a="as">Adicionar</button></div></div>
+  ${D.services.map((v,i)=>row(e(v.n),`<button class="chip${v.on?" on":""}" data-a="ts" data-v="${i}">${v.on?"Ativo":"Inativo"}</button><button class="chip" data-a="ds" data-v="${i}" >Remover</button>`)).join("")}
+  <div class="sum"><span>${sb?"Salvar publica as mudanças no site.":"Modo demonstração: salva só neste navegador."}</span><span><button class="btn" data-a="exp">Backup</button> <button class="btn" style="background:var(--fl)" data-a="save">Salvar alterações</button></span></div>`;
+}
+
+/* ===== EVENTOS ===== */
+function render(){A.innerHTML=ad?adm():home();s.fx="";cu();if(s.dd&&!ad&&matchMedia("(hover:hover)").matches){const i=$("#mq");if(i)i.focus()}}
+document.addEventListener("click",async ev=>{
+  const b=ev.target.closest("[data-a]");if(!b||b.tagName=="SELECT")return;
+  const a=b.dataset.a,v=b.dataset.v;
+  if(a=="rk")s.rk=!s.rk;
+  else if(a=="dd"){s.dd=!s.dd;s.fx=s.dd?"dd":""}
+  else if(a=="em"){s.m=null;s.dd=true;s.mq="";s.fx="dd"}
+  else if(a=="ey"){s.ids=null;s.lab="";s.note="";s.fx="y"}
+  else if(a=="t")s={...s,t:v,m:null,ids:v=="w"?"all":null,lab:"",note:"",sel:[],dd:true,mq:""};
+  else if(a=="m"){s.m=v;s.sel=[];s.dd=false;s.mq="";if(s.t=="w")s.ids="all";s.fx=s.ids?"res":"y"}
+  else if(a=="y"){s.ids=Y[v][3].split(",");s.lab=Y[v][1];s.note=""}
+  else if(a=="all"){s.ids="all";s.lab="";s.note=""}
+  else if(a=="q"){
+    const r=match(s.q);
+    if(r.length){s.ids=[...new Set(r.flatMap(i=>Y[i][3].split(",")))];s.lab=r.map(i=>Y[i][1]).join(" + ");s.note=""}
+    else{s.ids="all";s.lab="";s.note="Não consegui identificar o problema pelo texto. Veja todos os serviços abaixo ou fale com a gente no WhatsApp."}
+  }
+  else if(a=="s")s.sel=s.sel.includes(v)?s.sel.filter(x=>x!=v):[...s.sel,v];
+  else if(a=="pdf"){print();return}
+  else if(a=="in"){
+    const u=$("#u").value,p=$("#p").value;
+    if(sb){const{error}=await sb.auth.signInWithPassword({email:u,password:p});authed=!error}
+    else authed=u==CFG.demoUser&&p==CFG.demoPass;
+    if(!authed){$("#er").textContent="Usuário ou senha incorretos. Confira e tente de novo.";return}
+  }
+  else if(a=="out"){if(sb)await sb.auth.signOut();authed=false}
+  else if(a=="pct"){
+    const p=parseFloat($("#pc").value);if(!p)return;
+    if(!confirm("Reajustar todos os preços em "+p+"%?"))return;
+    Object.keys(D.prices).forEach(k=>D.prices[k]=Math.round(D.prices[k]*(1+p/100)/5)*5);toast("Preços reajustados");
+  }
+  else if(a=="am"){const n=$("#nn").value.trim(),t=$("#nt").value;if(n&&!D.models.some(m=>m.n==n&&m.t==t))D.models.push({n,t,on:1})}
+  else if(a=="tm")D.models[v].on=D.models[v].on?0:1;
+  else if(a=="dm"){if(confirm("Remover este aparelho e seus preços?")){const m=D.models.splice(v,1)[0];Object.keys(D.prices).filter(k=>k.endsWith("|"+m.n)).forEach(k=>delete D.prices[k])}}
+  else if(a=="as"){
+    const n=$("#sn").value.trim();if(!n)return;
+    D.services.push({id:"s"+Date.now(),n,d:$("#sd").value.trim(),fl:($("#sg").checked?"g":"")+($("#sf").checked?"f":"")+($("#st").value=="w"?"W":""),on:1});
+  }
+  else if(a=="ts")D.services[v].on=D.services[v].on?0:1;
+  else if(a=="ds"){if(confirm("Remover este serviço e seus preços?")){const x=D.services.splice(v,1)[0];Object.keys(D.prices).filter(k=>k.startsWith(x.id+"|")).forEach(k=>delete D.prices[k])}}
+  else if(a=="save"){toast(await save()?"Alterações salvas":"Erro ao salvar. Verifique a conexão e o login.");return}
+  else if(a=="exp"){const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:"application/json"}));l.download="jp-backup.json";l.click();return}
+  if(["y","all","q"].includes(a)&&s.ids)s.fx="res";
+  render();
+});
+document.addEventListener("change",ev=>{if(ev.target.dataset.a=="sv"){cs=ev.target.value;render()}});
+document.addEventListener("input",ev=>{
+  const i=ev.target;
+  if(i.id=="q")s.q=i.value;
+  if(i.id=="mq"){s.mq=i.value;$("#ml").innerHTML=mlist()}
+  if(i.dataset.k){const v=parseFloat(i.value);if(v>0)D.prices[i.dataset.k]=v;else delete D.prices[i.dataset.k]}
+});
+document.addEventListener("keydown",ev=>{if(ev.key=="Enter"&&ev.target.id=="q")$("[data-a=q]").click()});
+function hc(){ad=location.hash=="#admin";render();scrollTo(0,0)}
+addEventListener("hashchange",hc);
+(async()=>{
+  D=await load();
+  if(sb){const r=await sb.auth.getSession();authed=!!(r.data&&r.data.session)}
+  hc();
+})();
+</script>
+</body>
+</html>
